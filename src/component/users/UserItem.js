@@ -14,8 +14,7 @@ const UserItem = (props) => {
     )
 }
 
-UserItem.propTpyes=
-{
+UserItem.propTpyes={
     user:PropTypes.object.isRequired
 }
 
