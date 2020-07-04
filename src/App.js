@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import NavBar from "./component/layout/Navbar"
 import Users from "./component/users/Users"
+import Search from "./component/users/Search"
 import './App.css';
 import axios from "axios"
 
@@ -13,7 +14,8 @@ class App extends Component{
   async componentDidMount()
   {
     this.setState({loading:true})
-    const res = await axios.get("https://api.github.com/users")
+    const res = await axios.get("https://api.github.com/users", {headers:{'Authorization': process.env.REACT_APP_GITHUB_TOKEN }})
+    console.log(res.data.items)
     this.setState({user:res.data, loading:false})
   }
 
@@ -22,6 +24,7 @@ class App extends Component{
     return (
       <div className="App">
         <NavBar/>
+        <Search/>
         <div className="container">
           <Users loading={this.state.loading} users = {this.state.user}/>
         </div>
