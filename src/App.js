@@ -25,7 +25,7 @@ class App extends Component{
     return (
       <div className="App">
         <NavBar/>
-        <Search searchUsers = {this.searchUsers}/>
+        <Search searchUsers = {this.searchUsers} clearUsers ={this.clearUsers} showClear = {this.state.user.length > 0}/>
         <div className="container">
           <Users loading={this.state.loading} users = {this.state.user}/>
         </div>
@@ -37,6 +37,10 @@ class App extends Component{
     this.setState({loading:true})
     const res = await searchUsersFromGithub(text);
     this.setState({user:res, loading:false})
+  }
+
+  clearUsers = ()=> {
+    this.setState({user:[], loading:false})
   }
 }
 
