@@ -6,12 +6,12 @@ const github = axios.create({
   headers: { Authorization: process.env.REACT_APP_GITHUB_TOKEN }
 })
 
-export const searchUsers = async text => {
+export const searchUsersFromGithub = async text => {
   const res = await github.get(`/search/users?q=${text}`)
   return res.data.items
 }
 
-export const getUserAndRepos = async username => {
+export const getUserAndReposFromGithub = async username => {
   const repos = await github.get(
     `/users/${username}/repos?per_page=5&sort=created:asc?`
   )
