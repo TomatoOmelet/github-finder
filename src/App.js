@@ -1,8 +1,10 @@
-import React, {Component} from 'react';
+import React, {Component, Fragment} from 'react';
+import {BrowserRouter, Route, Switch} from "react-router-dom"
 import NavBar from "./component/layout/Navbar"
 import Users from "./component/users/Users"
 import Search from "./component/users/Search"
 import Alert from "./component/layout/Alert"
+import About from "./component/pages/About"
 import {searchUsersFromGithub} from "./component/GithubInfoGetter" 
 import './App.css';
 
@@ -25,15 +27,23 @@ class App extends Component{
   render()
   {
     return (
-      <div className="App">
-        <NavBar/>
-        <Alert alert = {this.state.alert}/>
-        <Search searchUsers = {this.searchUsers} clearUsers ={this.clearUsers} 
-                showClear = {this.state.user.length > 0} showAlert = {this.showAlert}/>
-        <div className="container">
-          <Users loading={this.state.loading} users = {this.state.user}/>
+      <BrowserRouter>
+        <div className="App">
+          <NavBar/>
+          <Alert alert = {this.state.alert}/>
+          <Switch>
+            <Route exact path = "/" render = {(props) =>(
+              <Fragment>
+                <Search searchUsers = {this.searchUsers} clearUsers ={this.clearUsers} 
+                        showClear = {this.state.user.length > 0} showAlert = {this.showAlert}/>
+                <div className="container">
+                  <Users loading={this.state.loading} users = {this.state.user}/>
+                </div>
+              </Fragment>)}/>
+            <Route exact path="/About" component={About}/>
+          </Switch>
         </div>
-      </div>
+      </BrowserRouter>
     );
   }
 
