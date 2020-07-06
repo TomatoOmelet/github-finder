@@ -1,4 +1,4 @@
-import React, {Component, Fragment} from 'react';
+import React, {Fragment, useState} from 'react';
 import {BrowserRouter, Route, Switch} from "react-router-dom"
 import NavBar from "./component/layout/Navbar"
 import Users from "./component/users/Users"
@@ -7,17 +7,17 @@ import Search from "./component/users/Search"
 import Alert from "./component/layout/Alert"
 import About from "./component/pages/About"
 import {searchUsersFromGithub, getUserAndReposFromGithub} from "./component/GithubInfoGetter" 
+
+import GithubState from "./context/github/GithubState"
 import './App.css';
 
 //import axios from "axios"
-class App extends Component{
-  state = {
-    user : [],
-    users: {},
-    userRepos:[],
-    loading : false,
-    alert : null
-  }
+const App = () =>{
+  const [user, setUser] = useState([])
+  const [users, setUsers] = useState({})
+  const [userRepos, setUserRepos] = useState([])
+  const [loading, setLoading] = useState(false)
+  const [alert, setAlert] = useState(null)
 
   // async componentDidMount()
   // {
@@ -27,54 +27,57 @@ class App extends Component{
   //   this.setState({user:res.data, loading:false})
   // }
 
-  render()
-  {
-    return (
-      <BrowserRouter>
-        <div className="App">
-          <NavBar/>
-          <Alert alert = {this.state.alert}/>
-          <Switch>
-            <Route exact path = "/" render = {(props) =>(
-              <Fragment>
-                <Search searchUsers = {this.searchUsers} clearUsers ={this.clearUsers} 
-                        showClear = {this.state.user.length > 0} showAlert = {this.showAlert}/>
-                <div className="container">
-                  <Users loading={this.state.loading} users = {this.state.user}/>
-                </div>
-              </Fragment>)}/>
-            <Route exact path="/About" component={About}/>
-            <Route exact path="/User:login" render={props=>(
-              <User {...props} getUserInfo={this.getUserInfo} user = {this.state.users} 
-                     repos={this.state.userRepos} loading = {this.state.loading}/>
-            )}/>
-          </Switch>
-        </div>
-      </BrowserRouter>
-    );
-  }
-
-  searchUsers = async (text)=>{
-    this.setState({loading:true})
+  const searchUsers = async (text)=>{
+    setLoading(true);
     const res = await searchUsersFromGithub(text);
-    this.setState({user:res, loading:false})
+    setLoading(false);
+    setUser(res);
   }
 
-  getUserInfo = async (userName)=>{
-    this.setState({loading:true})
+  const getUserInfo = async (userName)=>{
+    setLoading(true);
     const res = await getUserAndReposFromGithub(userName);
-    this.setState({users:res.user, loading:false, userRepos:res.repos})
+    setLoading(false);
+    setUsers(res.user);
+    setUserRepos(res.repos);
   }
 
-  clearUsers = ()=> {
-    this.setState({user:[], loading:false})
+  const clearUsers = ()=> {
+    setLoading(false);
+    setUser([]);
   }
 
-  showAlert = (message, type)=>{
-    this.setState({alert : {message:message, type:type}})
+  const showAlert = (message, type)=>{
+    setAlert({message:message, type:type})
 
-    setTimeout(() => {this.setState({alert : null})}, 5000)
+    setTimeout(() => {setAlert(null)}, 5000)
   }
+
+  return (
+    <GithubState>
+    <BrowserRouter>
+      <div className="App">
+        <NavBar/>
+        <Alert alert = {alert}/>
+        <Switch>
+          <Route exact path = "/" render = {(props) =>(
+            <Fragment>
+              <Search searchUsers = {searchUsers} clearUsers ={clearUsers} 
+                      showClear = {user.length > 0} showAlert = {showAlert}/>
+              <div className="container">
+                <Users loading={loading} users = {user}/>
+              </div>
+            </Fragment>)}/>
+          <Route exact path="/About" component={About}/>
+          <Route exact path="/User:login" render={props=>(
+            <User {...props} getUserInfo={getUserInfo} user = {users} 
+                    repos={userRepos} loading = {loading}/>
+          )}/>
+        </Switch>
+      </div>
+    </BrowserRouter>
+    </GithubState>
+  );
 }
 
 
