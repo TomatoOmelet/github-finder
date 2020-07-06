@@ -1,9 +1,11 @@
 import React, { useState , useContext} from 'react';
 import PropTypes from "prop-types";
 import GithubContext from "../../context/github/githubContext"
+import AlertContext from "../../context/alert/alertContext"
 
 const Search = () =>{
     const githubContext = useContext(GithubContext)
+    const alertContext = useContext(AlertContext)
     const [text, setText] = useState("")
   
     const onSubmit = (e) =>{
@@ -13,7 +15,7 @@ const Search = () =>{
             githubContext.searchUsers(text)
             setText("")
         }else{
-            githubContext.showAlert("Please input something to search.", "light")
+            alertContext.showAlert("Please input something to search.", "light")
         }
 
     }

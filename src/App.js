@@ -9,12 +9,11 @@ import About from "./component/pages/About"
 import {searchUsersFromGithub, getUserAndReposFromGithub} from "./component/GithubInfoGetter" 
 
 import GithubState from "./context/github/GithubState"
+import AlertState from "./context/alert/AlertState"
 import './App.css';
 
 //import axios from "axios"
 const App = () =>{
-  const [alert, setAlert] = useState(null)
-
   // async componentDidMount()
   // {
   //   this.setState({loading:true})
@@ -23,22 +22,17 @@ const App = () =>{
   //   this.setState({user:res.data, loading:false})
   // }
 
-  const showAlert = (message, type)=>{
-    setAlert({message:message, type:type})
-
-    setTimeout(() => {setAlert(null)}, 5000)
-  }
-
   return (
     <GithubState>
+    <AlertState>
     <BrowserRouter>
       <div className="App">
         <NavBar/>
-        <Alert alert = {alert}/>
+        <Alert/>
         <Switch>
           <Route exact path = "/" render = {(props) =>(
             <Fragment>
-              <Search showAlert = {showAlert}/>
+              <Search/>
               <div className="container">
                 <Users/>
               </div>
@@ -50,6 +44,7 @@ const App = () =>{
         </Switch>
       </div>
     </BrowserRouter>
+    </AlertState>
     </GithubState>
   );
 }
