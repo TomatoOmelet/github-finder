@@ -27,12 +27,7 @@ const App = () =>{
   //   this.setState({user:res.data, loading:false})
   // }
 
-  const searchUsers = async (text)=>{
-    setLoading(true);
-    const res = await searchUsersFromGithub(text);
-    setLoading(false);
-    setUser(res);
-  }
+
 
   const getUserInfo = async (userName)=>{
     setLoading(true);
@@ -62,7 +57,7 @@ const App = () =>{
         <Switch>
           <Route exact path = "/" render = {(props) =>(
             <Fragment>
-              <Search searchUsers = {searchUsers} clearUsers ={clearUsers} 
+              <Search clearUsers ={clearUsers} 
                       showClear = {user.length > 0} showAlert = {showAlert}/>
               <div className="container">
                 <Users loading={loading} users = {user}/>
