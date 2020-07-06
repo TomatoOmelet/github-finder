@@ -14,6 +14,7 @@ class App extends Component{
   state = {
     user : [],
     users: {},
+    userRepos:[],
     loading : false,
     alert : null
   }
@@ -44,7 +45,8 @@ class App extends Component{
               </Fragment>)}/>
             <Route exact path="/About" component={About}/>
             <Route exact path="/User:login" render={props=>(
-              <User {...props} getUserInfo={this.getUserInfo} user = {this.state.users} loading = {this.state.loading}/>
+              <User {...props} getUserInfo={this.getUserInfo} user = {this.state.users} 
+                     repos={this.state.userRepos} loading = {this.state.loading}/>
             )}/>
           </Switch>
         </div>
@@ -61,7 +63,7 @@ class App extends Component{
   getUserInfo = async (userName)=>{
     this.setState({loading:true})
     const res = await getUserAndReposFromGithub(userName);
-    this.setState({users:res.user, loading:false})
+    this.setState({users:res.user, loading:false, userRepos:res.repos})
   }
 
   clearUsers = ()=> {

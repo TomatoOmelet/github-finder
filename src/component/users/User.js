@@ -2,6 +2,7 @@ import React, { Component, Fragment } from 'react'
 import Spinner from "../layout/Spinner"
 import PropTypes from "prop-types"
 import {Link} from "react-router-dom"
+import Repo from "../repo/Repo"
 
 export class User extends Component {
     componentDidMount()
@@ -12,11 +13,12 @@ export class User extends Component {
     static propTypes = {
         loading: PropTypes.bool.isRequired,
         user: PropTypes.object.isRequired,
-        getUserInfo: PropTypes.func.isRequired
+        getUserInfo: PropTypes.func.isRequired,
+        repos: PropTypes.array.isRequired
     }
 
     render() {
-        const {user, loading} = this.props
+        const {user, loading, repos} = this.props
         const {login, avatar_url, followers, following, location, bio, blog, public_repos, public_gists, html_url,
             hireable, name, company} = user
 
@@ -24,7 +26,7 @@ export class User extends Component {
             return <Spinner/>
         
         return (
-            <Fragment>
+            <div style={{margin:"0px 100px"}}>
                 <Link to="/" className="btn btn-light">Back To Search</Link>
                 Hireable: {hireable?<i className="fas fa-check text-success"/>: <i className="fas fa-times-circle text-danger"/>}
                 <div className="card grid-2">
@@ -46,14 +48,16 @@ export class User extends Component {
                         </ul>
                     </div>
                 </div>
-                {/*left lower section*/}
+                {/*lower section*/}
                 <div className="card text-center">
                     <div className="badge badge-primary">Followers:{followers}</div>
                     <div className="badge badge-success">Following:{following}</div>
                     <div className="badge badge-light">Public Repos:{public_repos}</div>
                     <div className="badge badge-dark">Public Gists:{public_gists}</div>
                 </div>
-            </Fragment>
+
+                <Repo repos={this.props.repos}/>
+            </div>
         )
     }
 }
