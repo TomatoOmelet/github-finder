@@ -1,5 +1,4 @@
 import React from 'react'
-import Repo from './Repo'
 import PropTypes from "prop-types"
 
 export const RepoItem = ({repo}) => {
