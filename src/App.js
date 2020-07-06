@@ -1,9 +1,10 @@
-import React, {Fragment} from 'react';
+import React from 'react';
 import {BrowserRouter, Route, Switch} from "react-router-dom"
 import NavBar from "./component/layout/Navbar"
-import Users from "./component/users/Users"
 import User from "./component/users/User"
-import Search from "./component/users/Search"
+import Home from "./component/pages/Home"
+import NotFound from "./component/pages/NotFound"
+
 import Alert from "./component/layout/Alert"
 import About from "./component/pages/About"
 
@@ -30,17 +31,10 @@ const App = () =>{
         <NavBar/>
         <Alert/>
         <Switch>
-          <Route exact path = "/" render = {(props) =>(
-            <Fragment>
-              <Search/>
-              <div className="container">
-                <Users/>
-              </div>
-            </Fragment>)}/>
+          <Route exact path = "/" component={Home}/>
           <Route exact path="/About" component={About}/>
-          <Route exact path="/User:login" render={props=>(
-            <User {...props}/>
-          )}/>
+          <Route exact path="/User:login" component={User}/>
+          <Route component={NotFound}/>
         </Switch>
       </div>
     </BrowserRouter>
