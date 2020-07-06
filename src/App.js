@@ -13,10 +13,6 @@ import './App.css';
 
 //import axios from "axios"
 const App = () =>{
-  const [user, setUser] = useState([])
-  const [users, setUsers] = useState({})
-  const [userRepos, setUserRepos] = useState([])
-  const [loading, setLoading] = useState(false)
   const [alert, setAlert] = useState(null)
 
   // async componentDidMount()
@@ -26,21 +22,6 @@ const App = () =>{
   //   console.log(res.data.items)
   //   this.setState({user:res.data, loading:false})
   // }
-
-
-
-  const getUserInfo = async (userName)=>{
-    setLoading(true);
-    const res = await getUserAndReposFromGithub(userName);
-    setLoading(false);
-    setUsers(res.user);
-    setUserRepos(res.repos);
-  }
-
-  const clearUsers = ()=> {
-    setLoading(false);
-    setUser([]);
-  }
 
   const showAlert = (message, type)=>{
     setAlert({message:message, type:type})
@@ -57,16 +38,14 @@ const App = () =>{
         <Switch>
           <Route exact path = "/" render = {(props) =>(
             <Fragment>
-              <Search clearUsers ={clearUsers} 
-                      showClear = {user.length > 0} showAlert = {showAlert}/>
+              <Search showAlert = {showAlert}/>
               <div className="container">
-                <Users loading={loading} users = {user}/>
+                <Users/>
               </div>
             </Fragment>)}/>
           <Route exact path="/About" component={About}/>
           <Route exact path="/User:login" render={props=>(
-            <User {...props} getUserInfo={getUserInfo} user = {users} 
-                    repos={userRepos} loading = {loading}/>
+            <User {...props}/>
           )}/>
         </Switch>
       </div>

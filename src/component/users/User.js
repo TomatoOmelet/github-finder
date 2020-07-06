@@ -1,16 +1,20 @@
 import React, { useEffect } from 'react'
+import {useContext} from "react"
 import Spinner from "../layout/Spinner"
 import PropTypes from "prop-types"
 import {Link} from "react-router-dom"
 import Repo from "../repo/Repo"
+import GithubContext from "../../context/github/githubContext"
 
 const User = (props)=> {
+    const githubContext = useContext(GithubContext)
+
     useEffect(()=>{
-        props.getUserInfo(props.match.params.login.substring(1))
+        githubContext.getUserInfo(props.match.params.login.substring(1))
         //eslint-disable-next-line
     }, [])
 
-    const {user, loading, repos} = props
+    const {user, loading, repos} = githubContext
     const {login, avatar_url, followers, following, location, bio, blog, public_repos, public_gists, html_url,
         hireable, name, company} = user
 
@@ -51,13 +55,6 @@ const User = (props)=> {
             <Repo repos={repos}/>
         </div>
     )
-}
-
-User.propTypes = {
-    loading: PropTypes.bool.isRequired,
-    user: PropTypes.object.isRequired,
-    getUserInfo: PropTypes.func.isRequired,
-    repos: PropTypes.array.isRequired
 }
 
 export default User

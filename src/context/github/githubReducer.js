@@ -6,12 +6,25 @@ export default (state, action) => {
             return{
                 ...state,
                 users: action.payload,
-                loading: false
+                loading:false
             }
         case SET_LOADING:
             return{
                 ...state,
                 loading:true
+            }
+        case CLEAR_USERS:
+            return{
+                ...state,
+                loading:false,
+                users: []
+            }
+        case GET_USER:
+            return{
+                ...state,
+                loading:false,
+                user: action.payload.user,
+                repos: action.payload.repos
             }
         default:
             return state;
