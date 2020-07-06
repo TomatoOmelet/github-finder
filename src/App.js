@@ -1,4 +1,4 @@
-import React, {Fragment, useState} from 'react';
+import React, {Fragment} from 'react';
 import {BrowserRouter, Route, Switch} from "react-router-dom"
 import NavBar from "./component/layout/Navbar"
 import Users from "./component/users/Users"
@@ -6,7 +6,7 @@ import User from "./component/users/User"
 import Search from "./component/users/Search"
 import Alert from "./component/layout/Alert"
 import About from "./component/pages/About"
-import {searchUsersFromGithub, getUserAndReposFromGithub} from "./component/GithubInfoGetter" 
+
 
 import GithubState from "./context/github/GithubState"
 import AlertState from "./context/alert/AlertState"
